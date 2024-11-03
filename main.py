@@ -52,6 +52,10 @@ async def join(ctx):
     add_player(user=member, channel=new_channel.id)
     print(player_list)
 
+@bot.command()
+async def vote(ctx, number):
+    pass
+
 @bot.command() # покинуть игру
 async def leave(ctx, user: discord.Member = None):
     remove_player(user)
