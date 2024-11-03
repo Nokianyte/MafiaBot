@@ -40,7 +40,7 @@ async def foo(ctx, arg):
 async def join(ctx):
     member = ctx.author
     guild = ctx.guild
-    channel_name = member.name
+    channel_name = f"личный канал {len(player_list)+1}"
 
     overwrites = {
         guild.default_role: discord.PermissionOverwrite(read_messages=False),
@@ -58,10 +58,6 @@ async def leave(ctx, user: discord.Member = None):
     print(player_list)
 
 ##
-
-def create_lobby(mode):
-    ## adds everyone sitting in a set voice chennel to player list
-    pass
 
 def delete_channel(id):
     channel = bot.get_channel(id)
