@@ -8,19 +8,24 @@ class Player:
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
       
-
   def die():
     pass
   def quit():
     pass
   def tick():
     pass
-
+    
 
 player_list = []
 
 def add_player(user,channel):
   player_list.append(Player(user=user, number=len(player_list)+1, role=None, alive=True, text_channel_id=channel, voice_channel_id=None))
+
+def kill_player(number):
+  pass
+  
+def kick_player(number):
+  pass
 
 def remove_player(user):
   player_list.pop(find_player(user)) 
@@ -30,5 +35,5 @@ def find_player(number):
     if player_list[i].number==number:
       return i
 
-async def message(number):
+def message(number):
   bot.get_channel(player_list[find_player(number)].text_channel_id)
