@@ -35,5 +35,5 @@ def find_player(number):
     if player_list[i].number==number:
       return i
 
-def message(number):
+def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
