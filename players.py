@@ -21,12 +21,6 @@ player_list = []
 def add_player(user,channel):
   player_list.append(Player(user=user, number=len(player_list)+1, role=None, alive=True, text_channel_id=channel, voice_channel_id=None))
 
-def kill_player(number):
-  pass
-  
-def kick_player(number):
-  pass
-
 def remove_player(user):
   player_list.pop(find_player(user)) 
 
