@@ -27,7 +27,7 @@ class MyCog(commands.Cog): # система тактов
     def cog_unload(self):
         self.printer.cancel()
 
-    @tasks.loop(seconds=30.0)
+    @tasks.loop(seconds=10.0)
     async def printer(self):
         print(self.index)
         self.index += 1
