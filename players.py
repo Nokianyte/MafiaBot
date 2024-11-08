@@ -7,7 +7,13 @@ class Player:
     self.alive = alive
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
-      
+
+  def Action(self, self.role):
+    role = self.role
+    if (role == '')
+
+  
+  
   def die():
     pass
   def quit():
