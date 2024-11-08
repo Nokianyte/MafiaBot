@@ -32,3 +32,6 @@ def remove_player(user):
 
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
+
+
+# добавить группы
