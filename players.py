@@ -24,10 +24,5 @@ def add_player(user,channel):
 def remove_player(user):
   player_list.pop(find_player(user)) 
 
-def find_player(number):
-  for i in range(len(player_list)):
-    if player_list[i].number==number:
-      return i
-
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
