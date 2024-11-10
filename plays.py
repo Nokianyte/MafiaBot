@@ -43,6 +43,7 @@ class Group:
   # в param будет идти сначала text_channel, затем voice_channel
   # тогда если нужно узнать text_channel_id n-ого игрока то это индекс 2 * n
   # если нужно узнать voice_channel_id n-ого игрока то это индекс 2 * n + 1
+  # number - номер группы
   def ___init__(self, count, *param):
     Group.count_group += 1
     self.number = count_group
@@ -61,9 +62,9 @@ class Group:
       role = random.choise(roles)
       players_list.append(Player(user=user, number=len(player_list)+1, role=role, alive=True, text_channel_id=param[2 * i], voice_channel_id=param[2 * i + 1]))
       players_list.remove(role)
-
-    play_list.append(players_list)
   
+
+groups_list = []
 
 # учитывать тактовую систему перед добавлением игрока
 # не добавляем игрока, пока не закончится раунд
@@ -71,9 +72,14 @@ def add_player(user, text_channel_id, voice_channel_id, number):
   # необходимо переформировать всю группу
   player_list.append(Player(user=user, number=len(player_list)+1, role=None, alive=True, text_channel_id=channel, voice_channel_id=None))
 
+
+
 def remove_player(user):
   player_list.pop(find_player(user)) 
 
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
   
+# создать отдельно класс игры
+class PlayMafiaBot:
+  def __init__(self, )
