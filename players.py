@@ -7,11 +7,16 @@ class Player:
     self.alive = alive
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
-
-  def Action(self, self.role):
-    role = self.role
-    if (role == '')
-
+  
+  def Action(self, role, choose_player):
+    if role == 'Врач':
+      #игрок должен выбрать другого игрока, чтобы оживить
+      player_list[choose_player].alive = True
+    if role == 'Мафия1' or role == 'Мафия2':
+      player_list[choose_player].alive = False
+    if role == 'Инспектор':
+      #если идет первая ночь, то только проверка мафии
+      if 
   
   
   def die():
