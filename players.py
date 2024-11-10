@@ -8,16 +8,24 @@ class Player:
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
   
-  def Action(self, role, choose_player):
+  def Action(self, role, choose_player, step):
+    #choose_player - выбор игрока, над которым происходит действие
+    #step - выбор шага инспектора (0 или 1)
+    
     if role == 'Врач':
-      #игрок должен выбрать другого игрока, чтобы оживить
+      # игрок должен выбрать другого игрока, чтобы оживить
       player_list[choose_player].alive = True
+    
     if role == 'Мафия1' or role == 'Мафия2':
       player_list[choose_player].alive = False
+    
     if role == 'Инспектор':
-      #если идет первая ночь, то только проверка мафии
-      if 
-  
+      # если идет первая ночь, то только проверка мафии
+      if step == 0:
+        player_list[choose_player].alive = False
+      else:
+        #показать роль инспектору выбранного игрока
+        
   
   def die():
     pass
@@ -40,3 +48,7 @@ def message(number): #поменять
 
 
 # добавить группы
+class Group:
+  def ___init__(self, count):
+    self.count = count
+    self.group = [Player]
