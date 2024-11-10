@@ -5,7 +5,7 @@ class Player:
     self.user = user
     self.name = name
     self.number = number
-    self.role   = role
+    self.role = role
     self.alive = alive
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
@@ -26,8 +26,8 @@ class Player:
       if step == 0:
         player_list[choose_player].alive = False
       else:
-        #показать роль инспектору выбранного игрока
-        
+        # показать роль инспектору выбранного игрока
+        #
   
   def die():
     pass
@@ -35,18 +35,17 @@ class Player:
     pass
   def tick():
     pass
-    
-
-play_list = [] # все игры
 
 
 # добавить группы
 class Group:
+  count_group = 0
   # в param будет идти сначала text_channel, затем voice_channel
   # тогда если нужно узнать text_channel_id n-ого игрока то это индекс 2 * n
   # если нужно узнать voice_channel_id n-ого игрока то это индекс 2 * n + 1
   def ___init__(self, count, *param):
-    self.number = 
+    Group.count_group += 1
+    self.number = count_group
     self.count = count
     self.players_list = []
     count_mafia = round(count / 4)
@@ -64,12 +63,13 @@ class Group:
       players_list.remove(role)
 
     play_list.append(players_list)
+  
 
-
-'''
-def add_player(user,channel, role):
+# учитывать тактовую систему перед добавлением игрока
+# не добавляем игрока, пока не закончится раунд
+def add_player(user, text_channel_id, voice_channel_id, number):
+  # необходимо переформировать всю группу
   player_list.append(Player(user=user, number=len(player_list)+1, role=None, alive=True, text_channel_id=channel, voice_channel_id=None))
-'''
 
 def remove_player(user):
   player_list.pop(find_player(user)) 
