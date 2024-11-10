@@ -42,8 +42,11 @@ play_list = [] # все игры
 
 # добавить группы
 class Group:
-  # в param будет идти сначала 
-  def ___init__(self, count, *):
+  # в param будет идти сначала text_channel, затем voice_channel
+  # тогда если нужно узнать text_channel_id n-ого игрока то это индекс 2 * n
+  # если нужно узнать voice_channel_id n-ого игрока то это индекс 2 * n + 1
+  def ___init__(self, count, *param):
+    self.number = 
     self.count = count
     self.players_list = []
     count_mafia = round(count / 4)
@@ -55,13 +58,14 @@ class Group:
     roles.extend(['Peaceful'] * count_peaceful)
     
     for i in range(count):
-      # нужно знать user и channel
+      # нужно знать user и text_channel_id и voice_channel_id
       role = random.choise(roles)
-      player_list.append(Player(user=user, number=len(player_list)+1, role=role, alive=True, text_channel_id=channel, voice_channel_id=None))
-      player_list.remove(role)
+      players_list.append(Player(user=user, number=len(player_list)+1, role=role, alive=True, text_channel_id=param[2 * i], voice_channel_id=param[2 * i + 1]))
+      players_list.remove(role)
 
-    
-        
+    play_list.append(players_list)
+
+
 '''
 def add_player(user,channel, role):
   player_list.append(Player(user=user, number=len(player_list)+1, role=None, alive=True, text_channel_id=channel, voice_channel_id=None))
@@ -72,3 +76,4 @@ def remove_player(user):
 
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
+  
