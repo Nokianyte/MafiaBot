@@ -11,6 +11,13 @@ timer = 0
 from play import Player
 from play import groups_list
 
+def create_group(player=Player):
+  # player вводит число игроков (до 14 включительно) и запишем это число в переменную count   
+  if count > 14 or count < 6:
+    # вывести в игроку сообщение об ошибке (можно не делать, если трудно)
+    return
+  
+  
 # лобби создает один игрок, который будет главным
 # у игрока должна быть кнопка создания лобби
 class Lobby(quantity):
