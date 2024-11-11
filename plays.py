@@ -76,5 +76,3 @@ def distribution(number):
     groups_list[number][i].role = role
     roles.remove(role)
 
-round_counter = [] #кол-во раундов у отдельной группы
-
