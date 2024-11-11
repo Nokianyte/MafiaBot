@@ -65,13 +65,13 @@ def distribution(number):
   count_doctor = count_inspector = round(count / 10)
   count_peaceful = count - count_mafia - count_doctor - count_inspector   
   roles = ['Doctor'] * count_doctor
-  roles.extend(['Mafia'] * count_mafia
+  roles.extend(['Mafia'] * count_mafia)
   roles.extend(['Inspector'] * count_inspector)
   roles.extend(['Peaceful'] * count_peaceful)
     
   for i in range(count):
     role = random.choise(roles)
-    grours_list[number][i].role = role
+    groups_list[number][i].role = role
     roles.remove(role)
 
 round_counter = [] #кол-во раундов у отдельной группы
