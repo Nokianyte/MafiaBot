@@ -10,7 +10,7 @@ timer = 0
 
 from play import *
 
-
+# player должен запустить функцию
 def create_group(player=Player):
   # player вводит число игроков (до 14 включительно) и запишем это число в переменную count   
   if count > 14 or count < 6:
