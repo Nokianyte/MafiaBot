@@ -40,9 +40,16 @@ class Player:
 
 groups_list = []
 
+def find_group_with_friends(user) -> int:
+  for i in len(groups_list):
+    for j in groups_list[i]:
+      if j.user == user:
+        return i
+
 # учитывать тактовую систему перед добавлением игрока
 # не добавляем игрока, пока не закончится раунд
-def add_player(user, text_channel_id, voice_channel_id, number):
+def add_player(user, text_channel_id, voice_channel_id, user_friend):
+  number = find_group_with_friends(user_friend)
   # number - номер группы
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
@@ -53,12 +60,6 @@ def remove_player(user, number):
       groups_list[number].pop(i)
   # поменять канал у чувака 
   # player_list.pop(find_player(user)) 
-
-def find_group_friendly(user) -> int:
-  for i in len(groups_list):
-    for j in groups_list[i]:
-      if j.user == user:
-        return i
 
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
