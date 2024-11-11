@@ -23,9 +23,10 @@ def create_group(player=Player):
 
 # лобби создает один игрок, который будет главным
 # у игрока должна быть кнопка создания лобби
-class Lobby(quantity):
-  # создание единого канала 
-  # 
+class Lobby(number):
+  # создать единого voice_channel и text_channel для группы
+  distribution(number)
+  
 
 # начало игры
 def allPlay_(user):
