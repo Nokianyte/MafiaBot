@@ -11,9 +11,12 @@ timer = 0
 from play import Player
 from play import groups_list
 
-start_users = [] # 
+# лобби создает один игрок, который будет главным
+# у игрока должна быть кнопка создания лобби
+class Lobby(quantity):
+  # создание единого канала 
+  # 
 
 # начало игры
-# нужно выбрать главного игрока, который запустит игру
 def allPlay_(user):
   
