@@ -69,7 +69,10 @@ def message(number): #поменять
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(number):
   count = len(grours_list[number])
+  # главному игроку 
+  
   count_mafia = round(count / 4)
+  
   count_doctor = count_inspector = round(count / 10)
   count_peaceful = count - count_mafia - count_doctor - count_inspector   
   roles = ['Doctor'] * count_doctor
