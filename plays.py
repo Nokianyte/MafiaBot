@@ -13,31 +13,21 @@ class Player:
     self.alive = False
   
   def Action(self, role, choose_player, step):
-    #choose_player - выбор игрока, над которым происходит действие
-    #step - выбор шага инспектора (0 или 1)
-    
     if role == 'Doctor':
-      # игрок должен выбрать другого игрока, чтобы оживить
       player_list[choose_player].alive = True
-    
     if role == 'Mafia':
       player_list[choose_player].alive = False
-    
     if role == 'Inspector':
-      # если идет первая ночь, то только проверка мафии
-      if step == 0:
-        player_list[choose_player].alive = False
-      else:
-        # показать роль инспектору выбранного игрока
-        #
-  
+      # инспектору нужно показать, является ли choose_player мафией или нет
+  '''
   def die():
     pass
   def quit():
     pass
   def tick():
     pass
-
+'''
+  
 groups_list = []
 
 def find_group_with_friends(user) -> int:
@@ -46,14 +36,11 @@ def find_group_with_friends(user) -> int:
       if j.user == user:
         return i
 
-# учитывать тактовую систему перед добавлением игрока
-# не добавляем игрока, пока не закончится раунд
+ # number - номер группы
 def add_player(user, text_channel_id, voice_channel_id, user_friend):
   number = find_group_with_friends(user_friend)
   if len(groups_list[number]) 
-  # number - номер группы
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
-
 
 def remove_player(user, number):
   for i in range(groups_list[number]):
@@ -69,12 +56,16 @@ def message(number): #поменять
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(number):
   count = len(grours_list[number])
-  # главному игроку 
+  # Вывод только главному игроку:
+  # Рекомендованное количество мафии print(f"{round(count / 4)}")
+  # Ведите желаемое количество мафии
+  # то же самое делаем и для врача и инспектора
   
-  count_mafia = round(count / 4)
-  
-  count_doctor = count_inspector = round(count / 10)
   count_peaceful = count - count_mafia - count_doctor - count_inspector   
+  if count_peaceful < 1:
+    # не раздаем роли
+    return
+  
   roles = ['Doctor'] * count_doctor
   roles.extend(['Mafia'] * count_mafia)
   roles.extend(['Inspector'] * count_inspector)
