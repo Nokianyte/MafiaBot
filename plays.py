@@ -1,7 +1,6 @@
-import random
+import random # не импортировать ВЕСЬ модуль
 
 class Player:
-  role = None
   def __init__(self, user, name, role, alive, text_channel_id, voice_channel_id):
     self.user = user
     self.name = name
