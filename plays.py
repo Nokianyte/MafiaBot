@@ -50,6 +50,7 @@ def find_group_with_friends(user) -> int:
 # не добавляем игрока, пока не закончится раунд
 def add_player(user, text_channel_id, voice_channel_id, user_friend):
   number = find_group_with_friends(user_friend)
+  if len(groups_list[number]) 
   # number - номер группы
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
