@@ -53,13 +53,14 @@ def add_player(user, text_channel_id, voice_channel_id, user_friend):
   # number - номер группы
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
-# соблюдаем такты
+
 def remove_player(user, number):
   for i in range(groups_list[number]):
     if groups_list[number][i].user == user:
       groups_list[number].pop(i)
-  # поменять канал у чувака 
+  # поменять канал у чувака, чтобы он вышел
   # player_list.pop(find_player(user)) 
+
 
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
