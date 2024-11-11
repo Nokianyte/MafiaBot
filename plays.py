@@ -53,6 +53,7 @@ def remove_player(user, number):
   for i in range(groups_list[number]):
     if groups_list[number][i].user == user:
       groups_list[number].pop(i)
+  # поменять канал у чувака
   #player_list.pop(find_player(user)) 
 
 def message(number): #поменять
