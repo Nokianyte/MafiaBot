@@ -54,6 +54,12 @@ def remove_player(user, number):
   # поменять канал у чувака 
   # player_list.pop(find_player(user)) 
 
+def find_group_friendly(user) -> int:
+  for i in len(groups_list):
+    for j in groups_list[i]:
+      if j.user == user:
+        return i
+
 def message(number): #поменять
   bot.get_channel(player_list[find_player(number)].text_channel_id)
 
