@@ -16,8 +16,8 @@ def create_group(player=Player):
   if count > 14 or count < 6:
     # вывести в игроку сообщение об ошибке (можно не делать, если трудно)
     return
-  
-  
+  groups_list.append([])
+
 # лобби создает один игрок, который будет главным
 # у игрока должна быть кнопка создания лобби
 class Lobby(quantity):
