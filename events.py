@@ -1,15 +1,6 @@
 from play import *
 import time
 
-# player должен запустить функцию
-def create_group(player=Player):
-  # player вводит число игроков (до 14 включительно) и запишем это число в переменную count   
-  if count > 14 or count < 6:
-    # вывести в игроку сообщение об ошибке (можно не делать, если трудно)
-    return
-  
-  groups_list.append([Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id)])
-
 
 # -1 означает, что еще не конец
 # 0 означает, что мафия выйграла
@@ -23,8 +14,10 @@ def have_end(number) -> int:
     return 2
   return -1
 
+
 # тактовая система
 tact = 10
+
 
 def night():
   
@@ -33,12 +26,13 @@ def day():
   
 
   
-# лобби создает один игрок, который будет главным
+# лобби создает один игрок, который будет главным (main = True)
 # у главног игрока должен быть способ создания лобби (кнопка или /lobby)
-def create_lobby(number):
+def create_lobby(user):
   # создать единого voice_channel и text_channel для группы
   # чуваки из группы автоматически подключаются к одному каналу
-  
+
+
 # начало игры
 def allPlay_(user):
   # 
