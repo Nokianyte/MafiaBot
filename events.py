@@ -28,7 +28,6 @@ def day():
 
 def create_lobby(user):
   # создать единого voice_channel и text_channel для группы
-  # чуваки из группы автоматически подключаются к одному каналу
   
 
   
