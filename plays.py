@@ -39,7 +39,7 @@ def find_group_with_friends(user) -> int:
  # number - номер группы
 def add_player(user, text_channel_id, voice_channel_id, user_friend):
   number = find_group_with_friends(user_friend)
-  if len(groups_list[number]) 
+#  if len(groups_list[number]) 
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
 def remove_player(user, number):
@@ -57,7 +57,7 @@ def message(number): #поменять
 def distribution(number):
   count = len(grours_list[number])
   # Вывод только главному игроку:
-  # Рекомендованное количество мафии print(f"{round(count / 4)}")
+  # Рекомендованное количество мафии print(f"{round(count // 4)}")
   # Ведите желаемое количество мафии
   # то же самое делаем и для врача и инспектора
   
