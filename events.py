@@ -14,16 +14,32 @@ def have_end(number) -> int:
     return 2
   return -1
 
+def tick():
+  
+  global until_next_shift
+  global current_phase
+  
+  until_next_shift -= 1
+  if until_next_shift == 1:
+    pass #вывести сообщение, что осталось 10 сек
+  elif until_next_shift == 0:
+    phase_shift(current_phase)
 
+def phase_shift(current_phase: str):
+  match current_phase:
+    case 'speaking'
+
+def speaking_phase(current_speaker: int, time: int):
+  pass
+
+def voting_phase(candidates: list):
+  pass
+
+def night_phase():
+  pass
+  
 # тактовая система
 tact = 10
-
-
-def night():
-  
-
-def day():
-  
 
 
 def create_lobby(user):
