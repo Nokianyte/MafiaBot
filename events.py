@@ -1,6 +1,13 @@
 from play import *
 import time
 
+class Lobby(self, players: list, current_phase: str, until_next_phase: int, game_in_process: bool, max_player_count: int, mafia_count: int): #мб ещё дописать
+  self.players = players
+  self.current_phase = current_phase
+  self.until_next_phase = until_next_phase
+  self.game_in_process = game_in_process
+  self.max_player_count = max_player_count
+  self.mafia_count = mafia_count
 
 # -1 означает, что еще не конец
 # 0 означает, что мафия выйграла
