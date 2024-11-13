@@ -28,14 +28,15 @@ def day():
 
 def create_lobby(user):
   # создать единого voice_channel и text_channel для группы
+  #скорее всего стоит перенести в main
   
 
-  
+ ''' 
 # начало игры
-def allPlay_(user):
+def allPlay_(user): #где number?
   # 
   distribution(number)
-  time.sleep(tact)
+  #time.sleep(tact)
   while have_end(number) == -1:
     night()
     day()
@@ -43,3 +44,4 @@ def allPlay_(user):
     # Вывод о победе мирных
   else:
     # Вывод о победе мафии
+    ''' #игровым циклом я займусь, перепишу
