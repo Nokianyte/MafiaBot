@@ -1,4 +1,4 @@
-import random # не импортировать ВЕСЬ модуль
+from random import choice as ch # не импортировать ВЕСЬ модуль
 
 class Player:
   def __init__(self, user, name, role, alive, text_channel_id, voice_channel_id):
@@ -56,23 +56,15 @@ def message(number): #поменять
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(number):
   count = len(grours_list[number])
-  # Вывод только главному игроку:
-  # Рекомендованное количество мафии print(f"{round(count // 4)}")
-  # Ведите желаемое количество мафии
-  # то же самое делаем и для врача и инспектора
-  
-  count_peaceful = count - count_mafia - count_doctor - count_inspector   
-  if count_peaceful < 1:
-    # не раздаем роли
-    return
-  
-  roles = ['Doctor'] * count_doctor
-  roles.extend(['Mafia'] * count_mafia)
-  roles.extend(['Inspector'] * count_inspector)
+  cmafia = round(count / 3)
+  cpeaceful = count - cmafia - 2
+  roles = ['Mafia'] * cmafia
+  roles.append('Doctor')
+  roles.append('Inspector')
   roles.extend(['Peaceful'] * count_peaceful)
     
   for i in range(count):
-    role = random.choise(roles)
+    role = random.ch(roles)
     groups_list[number][i].role = role
     roles.remove(role)
 
