@@ -35,10 +35,9 @@ def join_lobby(player, number):
   player.text_
 
  # number - номер группы
-def add_player():
-  number = find_group_with_friends(user_friend)
-#  if len(groups_list[number]) 
-  groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
+def add_player(user, group_number):
+  if len(groups_list[group_number].player_list) < group_list[group_number].max_player_count:
+    groups_list[group_number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
 def remove_player(user, number):
   for i in range(groups_list[number]):
