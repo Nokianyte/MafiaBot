@@ -36,7 +36,7 @@ def join_lobby(player, number):
 
  # number - номер группы
 def add_player(user, group_number):
-  if len(lobbies_list[group_number].player_list) < group_list[group_number].max_player_count:
+  if len(lobbies_list[group_number].player_list) < lobbies_list[group_number].max_player_count:
     lobbies_list[group_number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
 def remove_player(user, number):
