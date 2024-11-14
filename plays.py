@@ -29,20 +29,20 @@ class Player:
     pass
 '''
   
-groups_list = []
+lobbies_list = []
 
 def join_lobby(player, number):
   player.text_
 
  # number - номер группы
 def add_player(user, group_number):
-  if len(groups_list[group_number].player_list) < group_list[group_number].max_player_count:
-    groups_list[group_number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
+  if len(lobbies_list[group_number].player_list) < group_list[group_number].max_player_count:
+    lobbies_list[group_number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
 def remove_player(user, number):
-  for i in range(groups_list[number]):
-    if groups_list[number][i].user == user:
-      groups_list[number].pop(i)
+  for i in range(lobbies_list[number]):
+    if lobbies_list[number][i].user == user:
+      lobbies_list[number].pop(i)
   # поменять канал у чувака, чтобы он вышел
   # player_list.pop(find_player(user)) 
 
@@ -62,6 +62,6 @@ def distribution(number):
     
   for i in range(count):
     role = random.ch(roles)
-    groups_list[number][i].role = role
+    lobbies_list[number][i].role = role
     roles.remove(role)
 
