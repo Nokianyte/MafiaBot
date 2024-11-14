@@ -1,10 +1,18 @@
 from players import *
 
 class Lobby:
-  def __init__(self, players: list, classic_gamemode: bool, current_phase: str, until_next_phase: int, game_in_process: bool, max_player_count: int, mafia_count: int): #мб ещё дописать
+  def __init__(self, players: list, classic_gamemode: bool, current_phase: str, speaker_queue: list, until_next_phase: int, game_in_process: bool, max_player_count: int, mafia_count: int): #мб ещё дописать
     self.players = players
     self.classic_gamemode = classic_gamemode
     self.current_phase = current_phase
+'''
+Фазы:
+  День - игроки говорят по очереди, могут пользоваться чатом, выставлять на голосование
+  Голосование - голосование; если поровну, игроки говорят по 30 сек
+  Вечер - речь того, кого выкинули
+  Ночь
+'''
+    self.speaker_queue = speaker_queue
     self.until_next_phase = until_next_phase
     self.game_in_process = game_in_process
     self.max_player_count = max_player_count
@@ -23,7 +31,7 @@ class Lobby:
 
   def phase_shift(current_phase: str): # дописать
     match current_phase:
-      case 'speaking'
+      case 'day'
 
   def speaking_phase(current_speaker: int, time: int):
     pass
@@ -51,7 +59,7 @@ def have_end(number) -> int:
 lobby_list = []
 
 def create_lobby(host, classic_gamemode: bool, max_players_count: int):
-  lobby_list.append(Lobby(players = [add_player(host)], classic_gamemode = classic_gamemode, current_phase = None, until_next_phase = 0, game_in_process = False, max_player_count = max_players_count))
+  lobby_list.append(Lobby(players = [add_player(host)], classic_gamemode = classic_gamemode, current_phase = None, speaker_queue = [], until_next_phase = 0, game_in_process = False, max_player_count = max_players_count))
 
 
 
