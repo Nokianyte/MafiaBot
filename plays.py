@@ -6,6 +6,7 @@ class Player:
     self.name = name
     self.role = role
     self.alive = alive
+    # self.doctor = doctor
     self.text_channel_id = text_channel_id
     self.voice_channel_id = voice_channel_id
 
@@ -30,14 +31,11 @@ class Player:
   
 groups_list = []
 
-def find_group_with_friends(user) -> int:
-  for i in len(groups_list):
-    for j in groups_list[i]:
-      if j.user == user:
-        return i
+def join_lobby(player, number):
+  player.text_
 
  # number - номер группы
-def add_player(user, text_channel_id, voice_channel_id, user_friend):
+def add_player():
   number = find_group_with_friends(user_friend)
 #  if len(groups_list[number]) 
   groups_list[number].append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
