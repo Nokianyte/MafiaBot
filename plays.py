@@ -1,4 +1,5 @@
 from random import choice as ch # не импортировать ВЕСЬ модуль
+from events import Lobby
 
 class Player:
   def __init__(self, user, name, role, alive, text_channel_id, voice_channel_id):
