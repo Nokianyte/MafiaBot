@@ -52,7 +52,7 @@ async def foo(ctx, arg):
 
 
 @bot.command()
-async def create_lobby(ctx, name: str, max_users: int):
+async def create_Lobby(ctx, name: str, max_users: int):
     """
     Команда для создания скрытого голосового канала.
     
@@ -61,11 +61,11 @@ async def create_lobby(ctx, name: str, max_users: int):
     :param max_users: Максимальное количество участников.
     """
     guild = ctx.guild
-#    overwrites = {
-#        guild.default_role: discord.PermissionOverwrite(view_channel=False),  это чтобы сделать канал скрытым (пока не нужно)
-#        ctx.author: discord.PermissionOverwrite(view_channel=True, connect=True)  # Разрешить автору видеть и подключаться
-#    }
-    
+    overwrites = {
+        guild.default_role: discord.PermissionOverwrite(view_channel=False),
+        ctx.author: discord.PermissionOverwrite(view_channel=True)
+    }
+    create_lobby(host = ctx.author, classic_gamemode = True, max_player_count = max_users)
     # Создаём канал
     try:
         channel = await guild.create_voice_channel(
@@ -73,7 +73,7 @@ async def create_lobby(ctx, name: str, max_users: int):
             user_limit=max_users,
  #           overwrites=overwrites
         )
-        await ctx.send(f"Скрытый голосовой канал '{name}' создан с лимитом {max_users} участников!")
+        await ctx.send(f"Голосовой канал '{name}' создан с лимитом {max_users} участников!")
     except Exception as e:
         await ctx.send(f"Произошла ошибка при создании канала: {e}")
 
