@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from discord.ext import tasks, commands
 
 from players import *
+from events import *
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
