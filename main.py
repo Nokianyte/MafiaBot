@@ -28,9 +28,11 @@ async def on_voice_state_update(member, before, after):
 
     if fetch_lobby(after.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(after.channel.id).add_player(member)
+        await member.add_roles(discord.utils.get(guild.roles, name=fetch_lobby(after.channel.id).name()))
         
     if fetch_lobby(before.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(before.channel.id).remove_player(member)
+        await member.remove_roles(discord.utils.get(guild.roles, name=fetch_lobby(before.channel.id).name()))
 
 
 class MyCog(commands.Cog): # система тактов
@@ -53,31 +55,29 @@ async def foo(ctx, arg):
 
 @bot.command()
 async def create_Lobby(ctx, name: str, max_users: int):
-    """
-    Команда для создания скрытого голосового канала.
-    
-    :param ctx: Контекст команды.
-    :param name: Имя создаваемого голосового канала.
-    :param max_users: Максимальное количество участников.
-    """
+
     guild = ctx.guild
+    
     overwrites = {
         guild.default_role: discord.PermissionOverwrite(view_channel=False),
-        ctx.author: discord.PermissionOverwrite(view_channel=True)
+        guild.role: discord.PermissionOverwrite(view_channel=True)
     }
+    
     create_lobby(host = ctx.author, classic_gamemode = True, max_player_count = max_users)
-    # Создаём канал
-    try:
-        channel = await guild.create_voice_channel(
-            name=name,
-            user_limit=max_users,
- #           overwrites=overwrites
-        )
-        await ctx.send(f"Голосовой канал '{name}' создан с лимитом {max_users} участников!")
-    except Exception as e:
-        await ctx.send(f"Произошла ошибка при создании канала: {e}")
 
+    role = await guild.create_role(name=name)
 
+    channel = await guild.create_voice_channel(
+        name=name,
+        user_limit=max_users,
+    )
+
+    channel = await guild.create_channel(
+        name=name,
+        overwrites=overwrites
+    )
+
+    await ctx.author.add_roles(role)
 
 
 @bot.command() # добавляет игрока в список
