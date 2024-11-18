@@ -28,11 +28,11 @@ async def on_voice_state_update(member, before, after):
 
     if fetch_lobby(after.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(after.channel.id).add_player(member)
-        await member.add_roles(discord.utils.get(guild.roles, name=fetch_lobby(after.channel.id).name()))
+        await bot.get_channel(fetch_lobby(after.channel.id).text_channel_id).set_permissions(ctx.author, view_channel=True)
         
     if fetch_lobby(before.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(before.channel.id).remove_player(member)
-        await member.remove_roles(discord.utils.get(guild.roles, name=fetch_lobby(before.channel.id).name()))
+        await bot.get_channel(fetch_lobby(before.channel.id).text_channel_id).set_permissions(ctx.author, view_channel=False)
 
 
 class MyCog(commands.Cog): # система тактов
@@ -60,14 +60,11 @@ async def create_Lobby(ctx, name: str, max_users: int):
     
     overwrites = {
         guild.default_role: discord.PermissionOverwrite(view_channel=False),
-        guild.role: discord.PermissionOverwrite(view_channel=True)
     }
     
     create_lobby(host = ctx.author, classic_gamemode = True, max_player_count = max_users)
 
-    role = await guild.create_role(name=name)
-
-    channel = await guild.create_voice_channel(
+    voice_channel = await guild.create_voice_channel(
         name=name,
         user_limit=max_users,
     )
@@ -77,24 +74,8 @@ async def create_Lobby(ctx, name: str, max_users: int):
         overwrites=overwrites
     )
 
-    await ctx.author.add_roles(role)
+    await channel.set_permissions(ctx.author, view_channel=True)
 
-
-@bot.command() # добавляет игрока в список
-async def join(ctx):
-    member = ctx.author
-    guild = ctx.guild
-    channel_name = f"личный канал {len(player_list)+1}"
-
-    overwrites = {
-        guild.default_role: discord.PermissionOverwrite(read_messages=False),
-        member: discord.PermissionOverwrite(read_messages=True)
-    }
-
-    new_channel = await guild.create_text_channel(channel_name, overwrites=overwrites)
-
-    add_player(user=member, channel=new_channel.id)
-    print(player_list)
 
 @bot.command()
 async def vote(ctx, number):
