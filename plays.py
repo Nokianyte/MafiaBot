@@ -14,7 +14,7 @@ class Player:
   def kill(user):
     self.alive = False
   
-  def Action(self, role, choose_player, step):
+  def Action(self, role, choose_player):
     if role == 'Doctor':
       player_list[choose_player].alive = True
     if role == 'Mafia':
@@ -38,9 +38,8 @@ def join_lobby(player, number):
 '''
 
  # number - номер группы
-def add_player(user, group_number):
-  if len(lobbies_list[group_number].player_list) < lobbies_list[group_number].max_player_count:
-    lobbies_list[group_number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
+def add_player(user, number):
+  lobbies_list[number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
 def remove_player(user, number):
   for i in range(lobbies_list[number]):
@@ -55,7 +54,7 @@ def message(number): #поменять
 
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(number):
-  count = len(grours_list[number])
+  count = len(lobbies_list[number])
   cmafia = round(count / 3)
   cpeaceful = count - cmafia - 2
   roles = ['Mafia'] * cmafia
