@@ -12,6 +12,9 @@ class Lobby:
   Вечер - речь того, кого выкинули
   Ночь
 '''
+    def change_of_day_and_night():
+      
+
     self.speaker_queue = speaker_queue
     self.until_next_phase = until_next_phase
     self.game_in_process = game_in_process
@@ -21,7 +24,9 @@ class Lobby:
   def start_game():
     self.game_in_process = True
     # распределить роли и всё такое
-
+    distribution()
+    # вывести сообщение что игра началась
+    
   def tick():  
     self.until_next_phase -= 1
     if self.until_next_phase == 1:
