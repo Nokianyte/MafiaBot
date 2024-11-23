@@ -32,8 +32,10 @@ class Player:
   
 lobbies_list = []
 
+'''
 def join_lobby(player, number):
   player.text_
+'''
 
  # number - номер группы
 def add_player(user, group_number):
