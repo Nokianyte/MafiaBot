@@ -5,7 +5,7 @@ class Lobby:
     self.players = players
     self.classic_gamemode = classic_gamemode
     self.current_phase = current_phase
-    
+
 '''
 Фазы:
   День - игроки говорят по очереди, могут пользоваться чатом, выставлять на голосование
@@ -13,22 +13,32 @@ class Lobby:
   Вечер - речь того, кого выкинули
   Ночь
 '''
-
-  def change_of_day_and_night():
-      
-
+   
   self.speaker_queue = speaker_queue
   self.until_next_phase = until_next_phase
   self.game_in_process = game_in_process
   self.max_player_count = max_player_count
   self.mafia_count = mafia_count
 
+  def night_time_counter():
+    # мафии даем минуту, доктору и инспектору по полминуты
+    # итого 2 минуты
+    self.until_next_phase = 20
+    for _ in range(20):
+      tick()
+    
+  def day_time_counter():
+    # озвучивание событий за ночь
+    if classic_gamemode:
+      
+    else:
+      
+
   def start_game():
     self.game_in_process = True
-    # распределить роли и всё такое
     distribution(self.players)
-    
-    # вывести сообщение что игра началась
+    # вывести сообщение, что игра началась
+    night_time_counter()
     
   def tick():  
     self.until_next_phase -= 1
@@ -39,7 +49,10 @@ class Lobby:
 
   def phase_shift(current_phase: str): # дописать
     match current_phase:
-      case 'day'
+      case 'day':
+        night_time_counter()
+      case 'night':
+        day_time_counter()
 
   def speaking_phase(current_speaker: int, time: int):
     pass
@@ -68,6 +81,8 @@ lobby_list = []
 
 def create_lobby(host, classic_gamemode: bool, max_players_count: int):
   lobby_list.append(Lobby(players = [add_player(host)], classic_gamemode = classic_gamemode, current_phase = None, speaker_queue = [], until_next_phase = 0, game_in_process = False, max_player_count = max_players_count))
+
+
 
 
 
