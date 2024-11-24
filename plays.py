@@ -46,7 +46,7 @@ def message(number): #поменять
   pass
 
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
-def distribution(number):
+def distribution(_players: list):
   count = len(lobbies_list[number])
   cmafia = round(count / 3)
   cpeaceful = count - cmafia - 2
