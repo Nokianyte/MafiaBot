@@ -30,8 +30,6 @@ class Player:
     pass
 '''
   
-lobbies_list = []
-
 '''
 def join_lobby(player, number):
   player.text_
