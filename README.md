@@ -11,4 +11,3 @@ Plan:
 
 questions:
 - Будет ли админ?
-- В чем отличие current_phase и until_next_phase в events?
