@@ -47,7 +47,7 @@ def message(number): #поменять
 
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(_players: list):
-  count = len(lobbies_list[number])
+  count = len(_players)
   cmafia = round(count / 3)
   cpeaceful = count - cmafia - 2
   roles = ['Mafia'] * cmafia
@@ -57,6 +57,6 @@ def distribution(_players: list):
     
   for i in range(count):
     role = random.ch(roles)
-    lobbies_list[number][i].role = role
+    _players[i].role = role
     roles.remove(role)
 
