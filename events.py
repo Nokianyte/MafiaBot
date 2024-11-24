@@ -40,7 +40,7 @@ class Lobby:
     # вывести сообщение, что игра началась
     night_time_counter()
     
-  def tick():  
+  def tick():  #вызывается в main
     self.until_next_phase -= 1
     if self.until_next_phase == 1:
       pass #вывести сообщение, что осталось 10 сек
