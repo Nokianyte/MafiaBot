@@ -39,18 +39,13 @@ def join_lobby(player, number):
 
  # number - номер группы
 def add_player(user, number):
-  lobbies_list[number].player_list.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
+  lobbies_list[number].players.append(Player(user=user, name=name, role=None, alive=True, text_channel_id=text_channel_id, voice_channel_id=voice_channel_id))
 
-def remove_player(user, number):
-  for i in range(lobbies_list[number]):
-    if lobbies_list[number][i].user == user:
-      lobbies_list[number].pop(i)
-  # поменять канал у чувака, чтобы он вышел
-  # player_list.pop(find_player(user)) 
-
+def remove_player(user, number): # поменять
+  pass
 
 def message(number): #поменять
-  bot.get_channel(player_list[find_player(number)].text_channel_id)
+  pass
 
 # раздача ролей, после игры меняем все роли на None и добавляем новых игроков
 def distribution(number):
