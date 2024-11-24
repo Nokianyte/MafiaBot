@@ -24,7 +24,7 @@ async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
 @bot.event
-async def on_voice_state_update(member, before, after):
+async def on_voice_state_update(member, before, after): # внести изменения
 
     if fetch_lobby(after.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(after.channel.id).add_player(member)
@@ -35,7 +35,7 @@ async def on_voice_state_update(member, before, after):
         await bot.get_channel(fetch_lobby(before.channel.id).text_channel_id).set_permissions(ctx.author, view_channel=False)
 
 
-class MyCog(commands.Cog): # система тактов
+class MyCog(commands.Cog): # система тактов, вызывает функцию tick у объектов классов Lobby и Player раз в 10 секунд
     def __init__(self):
         self.index = 0
         self.printer.start()
