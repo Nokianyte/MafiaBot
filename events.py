@@ -1,26 +1,29 @@
 from players import *
 
 class Lobby:
-  def __init__(self, players: list, until_next_phase: int, game_in_process: bool, max_player_count: int, mafia_count: int): #мб ещё дописать
-    self.players = players   
-    self.until_next_phase = until_next_phase
+  def __init__(self, players: list, channels: dict, game_stats: dict, game_in_process: bool, max_player_count: int): #мб ещё дописать
+    self.players = players
+    self.channels = channels 
+    self.game_stats = game_stats
     self.game_in_process = game_in_process
-    self.max_player_count = max_player_count
-    self.mafia_count = mafia_count    
+    self.max_player_count = max_player_count   
 
-  def start_game():
+  def start_game(self):
     self.game_in_process = True
     distribution(self.players)
     # вывести сообщение, что игра началась
     
-  def tick():  #вызывается в main
+  def add_player(self, user):
+    self.players.append(Player(user=user, name=None, role=None, alive=False, voted_for = None))
+
+  def tick(self):  #вызывается в main
     self.until_next_phase -= 1
     if self.until_next_phase == 1:
       pass #вывести сообщение, что осталось 10 сек
     elif self.until_next_phase == 0:
       phase_shift(self.current_phase)
 
-  def phase_shift(current_phase: str): # дописать
+  def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
     #убить игрока, на которого нацелилась мафия
     #убить игрока, за которого проголосовало большинство города
@@ -43,5 +46,20 @@ def have_end(number) -> int:
 
 lobby_list = []
 
-def create_lobby(host, classic_gamemode: bool, max_players_count: int):
-  lobby_list.append(Lobby(players = [add_player(host)], until_next_phase = 12, game_in_process = False, max_player_count = max_players_count))
+def create_lobby(host, name: str, voice_channel_id: int, common_text_id: int, mafia_text_id: int, inspector_text_id: int, max_players_count: int):
+  lobby_list.append(Lobby(
+    players = [], 
+    channels = {
+      'voice_channel_id':voice_channel_id, 
+      'common_text_id':common_text_id, 
+      'mafia_text_id':mafia_text_id, 
+      'inspector_text_id':inspector_text_id
+    }, 
+    game_stats = {
+      'until_next_phase':0, 
+      'mafia_count':0
+    }, 
+    game_in_process = False, 
+    max_player_count = max_players_count
+  ))
+  lobby_list[-1].add_player(host)
