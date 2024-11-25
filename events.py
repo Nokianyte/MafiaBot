@@ -13,6 +13,7 @@ class Lobby:
     distribution(self.players)
     # вывести сообщение, что игра началась
     
+    
   def add_player(self, user):
     self.players.append(Player(user=user, name=None, role=None, alive=False, voted_for = None))
 
@@ -21,7 +22,7 @@ class Lobby:
     if self.until_next_phase == 1:
       pass #вывести сообщение, что осталось 10 сек
     elif self.until_next_phase == 0:
-      phase_shift(self.current_phase)
+      phase_shift(self)
 
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
