@@ -14,7 +14,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents.default()
 intents.guilds = True
 intents.guild_messages = True
-intents.guild_voice_states = True
+intents.voice_states = True
 intents.message_content = True
 
 bot = commands.Bot(command_prefix='$', intents=intents)
@@ -26,16 +26,21 @@ async def on_ready():
 @bot.event
 async def on_voice_state_update(member, before, after): # внести изменения
 
+    #Регистрирует заход/выход игроков из голосовых каналов
+
     if fetch_lobby(after.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(after.channel.id).add_player(member)
-        await bot.get_channel(fetch_lobby(after.channel.id).text_channel_id).set_permissions(ctx.author, view_channel=True)
+        await bot.get_channel(fetch_lobby(after.channel.id).text_channel_id).set_permissions(member, view_channel=True)
         
     if fetch_lobby(before.channel.id) != None and fetch_lobby(after.channel.id).game_in_process == False:
         fetch_lobby(before.channel.id).remove_player(member)
-        await bot.get_channel(fetch_lobby(before.channel.id).text_channel_id).set_permissions(ctx.author, view_channel=False)
+        await bot.get_channel(fetch_lobby(before.channel.id).text_channel_id).set_permissions(member, view_channel=False)
 
 
-class MyCog(commands.Cog): # система тактов, вызывает функцию tick у объектов классов Lobby и Player раз в 10 секунд
+class MyCog(commands.Cog): 
+    
+    # система тактов, вызывает функцию tick у объектов классов Lobby и Player раз в 10 секунд
+
     def __init__(self):
         self.index = 0
         self.printer.start()
@@ -48,34 +53,37 @@ class MyCog(commands.Cog): # система тактов, вызывает фу�
         print(self.index)
         self.index += 1
 
-@bot.command() # тестовая
-async def foo(ctx, arg):
+@bot.command()
+async def foo(ctx, arg): #тест на ввод-вывод
     await ctx.send(arg)
 
-
 @bot.command()
-async def create_Lobby(ctx, name: str, max_users: int):
+async def create_Lobby(ctx, name, max_users): #Создание лобби
+
+    #!Добавить условие чтобы можно было создавать лобби только из голосового
 
     guild = ctx.guild
     
-    overwrites = {
-        guild.default_role: discord.PermissionOverwrite(view_channel=False),
-    }
-    
-    create_lobby(host = ctx.author, classic_gamemode = True, max_player_count = max_users)
+    overwrites = {guild.default_role: discord.PermissionOverwrite(view_channel=False),}
 
-    voice_channel = await guild.create_voice_channel(
-        name=name,
-        user_limit=max_users,
+    voice_channel = await guild.create_voice_channel(name=name, user_limit=int(max_users))
+    common_text = await guild.create_text_channel(name='общий', overwrites=overwrites)
+    mafia_text = await guild.create_text_channel(name='мафия', overwrites=overwrites)
+    inspector_text = await guild.create_text_channel(name='шериф', overwrites=overwrites)
+
+    await common_text.set_permissions(ctx.author, view_channel=True)
+
+    await ctx.author.move_to(voice_channel) #Перекидывает хоста в голосовой
+
+    create_lobby(
+        host = ctx.author, 
+        name = name, 
+        voice_channel_id = voice_channel.id, 
+        common_text_id = common_text.id, 
+        mafia_text_id = mafia_text.id, 
+        inspector_text_id = inspector_text.id, 
+        max_players_count = max_users
     )
-
-    channel = await guild.create_channel(
-        name=name,
-        overwrites=overwrites
-    )
-
-    await channel.set_permissions(ctx.author, view_channel=True)
-
 
 @bot.command()
 async def vote(ctx, number):
@@ -98,10 +106,6 @@ def delete_channel(id):
     channel = bot.get_channel(id)
     channel.delete()
     return None
-
-def move_to_vc(user, id):
-    channel = bot.get_channel(id)
-    user.move_to(channel)
 
 bot.run(TOKEN)
 
