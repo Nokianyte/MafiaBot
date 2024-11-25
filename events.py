@@ -13,21 +13,23 @@ class Lobby:
     distribution(self.players)
     # вывести сообщение, что игра началась
     
-    
   def add_player(self, user):
-    self.players.append(Player(user=user, name=None, role=None, alive=False, voted_for = None))
+    self.players.append(Player(user=user, role=None, alive=False, voted_for=None))
+
+  def remove_player(self, user):
+    for i in self.players:
+      if i.user == user: self.players.remove(i)
 
   def tick(self):  #вызывается в main
     self.until_next_phase -= 1
     if self.until_next_phase == 1:
       pass #вывести сообщение, что осталось 10 сек
     elif self.until_next_phase == 0:
-      phase_shift(self)
+      phase_shift(self.current_phase)
 
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
     #убить игрока, на которого нацелилась мафия
-    
     #убить игрока, за которого проголосовало большинство города
     #активировать способность доктора
     #сказать о проверке шерифу
@@ -57,9 +59,9 @@ def create_lobby(host, name: str, voice_channel_id: int, common_text_id: int, ma
       'mafia_text_id':mafia_text_id, 
       'inspector_text_id':inspector_text_id
     }, 
-    game_stats = {
+    game_stats = { #!Добавить больше статов
       'until_next_phase':0, 
-      'mafia_count':0
+      'mafia_count':0 
     }, 
     game_in_process = False, 
     max_player_count = max_players_count
