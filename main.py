@@ -108,7 +108,7 @@ async def ban(ctx, user): #функция бана
                 fetch_by_user(user)['lobby'].remove_player(fetch_by_user(user)['player'])
 
                 await ctx.send(f'Пользователь {user} был забанен!')
-
+            
 # Всё это надо дописать...
 
 @bot.command()
