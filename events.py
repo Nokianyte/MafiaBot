@@ -1,7 +1,6 @@
-from players import *
-
 class Lobby:
-  def __init__(self, players: list, channels: dict, game_stats: dict, game_in_process: bool, max_player_count: int): #мб ещё дописать
+  def __init__(self, players: list, channels: dict, game_stats: dict, game_in_process: bool, max_player_count: int):
+
     self.players = players
     self.channels = channels 
     self.game_stats = game_stats
@@ -10,22 +9,32 @@ class Lobby:
 
   def start_game(self):
     self.game_in_process = True
-    distribution(self.players)
+    #distribution(self.players)
+    self.game_stats = {
+      'until_next_phase':15,
+      'target':None,
+      'inspected':None
+    }
     # вывести сообщение, что игра началась
     
   def add_player(self, user):
-    self.players.append(Player(user=user, role=None, alive=False, voted_for=None))
+    self.players.append({
+      'user':user, 
+      'role':None, 
+      'alive':False, 
+      'voted_for':None
+    })
 
   def remove_player(self, user):
-    for i in self.players:
-      if i.user == user: self.players.remove(i)
+    for player in self.players:
+      if player['user'] == user: self.players.remove(i)
 
   def tick(self):  #вызывается в main
     self.until_next_phase -= 1
     if self.until_next_phase == 1:
       pass #вывести сообщение, что осталось 10 сек
     elif self.until_next_phase == 0:
-      phase_shift(self.current_phase)
+      self.phase_shift(self.current_phase)
 
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
@@ -50,7 +59,7 @@ def have_end(number) -> int:
 
 lobby_list = []
 
-def create_lobby(host, name: str, voice_channel_id: int, common_text_id: int, mafia_text_id: int, inspector_text_id: int, max_players_count: int):
+def create_lobby(host, voice_channel_id: int, common_text_id: int, mafia_text_id: int, inspector_text_id: int, max_players_count: int):
   lobby_list.append(Lobby(
     players = [], 
     channels = {
@@ -59,11 +68,21 @@ def create_lobby(host, name: str, voice_channel_id: int, common_text_id: int, ma
       'mafia_text_id':mafia_text_id, 
       'inspector_text_id':inspector_text_id
     }, 
-    game_stats = { #!Добавить больше статов
-      'until_next_phase':0, 
-      'mafia_count':0 
-    }, 
+    game_stats = None,
     game_in_process = False, 
     max_player_count = max_players_count
   ))
   lobby_list[-1].add_player(host)
+
+def fetch_by_user(user): # берёт ID пользователя, возвращает статы игрока, лобби
+  output = None
+  for lobby in lobby_list:
+    for player in lobby.players:
+      if player['user'] == user: output = {'player':player, 'lobby':lobby}
+  return output #!Переделать это тк будут вылетать ошибки
+
+def fetch_lobby_by_channel(channel_id): # берёт ID голосового канала, возвращает объект привязанного лобби
+  output = None
+  for lobby in lobby_list:
+    if channel_id in lobby.channels.values(): output = lobby
+  return output
