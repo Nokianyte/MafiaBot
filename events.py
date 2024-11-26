@@ -15,6 +15,18 @@ class Lobby:
       'target':None,
       'inspected':None
     }
+    count = len(_players)
+  cmafia = round(count / 3)
+  cpeaceful = count - cmafia - 2
+  roles = ['Mafia'] * cmafia
+  roles.append('Doctor')
+  roles.append('Inspector')
+  roles.extend(['Peaceful'] * count_peaceful)
+    
+  for i in range(count):
+    role = random.ch(roles)
+    _players[i].role = role
+    roles.remove(role)
     # вывести сообщение, что игра началась
     
   def add_player(self, user):
@@ -39,6 +51,25 @@ class Lobby:
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
     #убить игрока, на которого нацелилась мафия
+    def voting():
+      user_deleted = None
+      choose_user_deleted = dict()
+      for i in players:
+        choose_user_deleted[i.voted_for] = 0
+      for i in players:
+        choose_user_deleted[i.voted_for] += 1
+      choose_user_deleted = reverse(sorted(choose_user_deleted, key=lambda x: x[1]))
+      first = list(my_dict.items())[0]
+      second = list(my_dict.items())[1]
+      if first[1] != None and first[1] != second[1]:
+        for lobby in lobby_list:
+          for player in lobby.players:
+            if player['user'] == first[0]:
+              player['alive'] = False
+              break
+        return first[0]
+      return None
+
     #убить игрока, за которого проголосовало большинство города
     #активировать способность доктора
     #сказать о проверке шерифу
