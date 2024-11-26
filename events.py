@@ -27,7 +27,7 @@ class Lobby:
 
   def remove_player(self, user):
     for player in self.players:
-      if player['user'] == user: self.players.remove(i)
+      if player['user'] == user: self.players.remove(player)
 
   def tick(self):  #вызывается в main
     self.until_next_phase -= 1
@@ -59,7 +59,7 @@ def have_end(number) -> int:
 
 lobby_list = []
 
-def create_lobby(host, voice_channel_id: int, common_text_id: int, mafia_text_id: int, inspector_text_id: int, max_players_count: int):
+def create_lobby(voice_channel_id: int, common_text_id: int, mafia_text_id: int, inspector_text_id: int, max_players_count: int):
   lobby_list.append(Lobby(
     players = [], 
     channels = {
@@ -72,7 +72,6 @@ def create_lobby(host, voice_channel_id: int, common_text_id: int, mafia_text_id
     game_in_process = False, 
     max_player_count = max_players_count
   ))
-  lobby_list[-1].add_player(host)
 
 def fetch_by_user(user): # берёт ID пользователя, возвращает статы игрока, лобби
   output = None
