@@ -50,10 +50,11 @@ class Lobby:
       target_player = None
       for player in self.players:
         if target == player['user']:
-          target_player = player['target']
-        
-      if self.game_stats['target'] != None and self.game_stats['protected'] and target_player != None:
-        
+          target_player = player
+          break
+          
+      if self.game_stats['protected'] != self.game_stats['target'] and target_player != None:
+        target_player['alive'] = False
         
     #убить игрока, за которого проголосовало большинство города
     def voting():
@@ -73,8 +74,6 @@ class Lobby:
               player['alive'] = False
               return first[1]
       return None
-    #активировать способность доктора
-    
     #сказать о проверке шерифу
     
 
