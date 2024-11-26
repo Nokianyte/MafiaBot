@@ -1,3 +1,5 @@
+from random import choice as ch
+
 class Lobby:
   def __init__(self, players: list, channels: dict, game_stats: dict, game_in_process: bool, max_player_count: int):
 
@@ -15,18 +17,17 @@ class Lobby:
       'target':None,
       'inspected':None
     }
-    count = len(_players)
-  cmafia = round(count / 3)
-  cpeaceful = count - cmafia - 2
-  roles = ['Mafia'] * cmafia
-  roles.append('Doctor')
-  roles.append('Inspector')
-  roles.extend(['Peaceful'] * count_peaceful)
-    
-  for i in range(count):
-    role = random.ch(roles)
-    _players[i].role = role
-    roles.remove(role)
+    count = len(players)
+    cmafia = round(count / 3)
+    cpeaceful = count - cmafia - 2
+    roles = ['Mafia'] * cmafia
+    roles.append('Doctor')
+    roles.append('Inspector')
+    roles.extend(['Peaceful'] * count_peaceful)
+    for i in range(count):
+      role = random.ch(roles)
+      players[i].role = role
+      roles.remove(role)
     # вывести сообщение, что игра началась
     
   def add_player(self, user):
@@ -41,16 +42,10 @@ class Lobby:
     for player in self.players:
       if player['user'] == user: self.players.remove(player)
 
-  def tick(self):  #вызывается в main
-    self.until_next_phase -= 1
-    if self.until_next_phase == 1:
-      pass #вывести сообщение, что осталось 10 сек
-    elif self.until_next_phase == 0:
-      self.phase_shift(self.current_phase)
-
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
     #убить игрока, на которого нацелилась мафия
+    #убить игрока, за которого проголосовало большинство города
     def voting():
       user_deleted = None
       choose_user_deleted = dict()
@@ -66,11 +61,8 @@ class Lobby:
           for player in lobby.players:
             if player['user'] == first[0]:
               player['alive'] = False
-              break
-        return first[0]
+              return first[1]
       return None
-
-    #убить игрока, за которого проголосовало большинство города
     #активировать способность доктора
     #сказать о проверке шерифу
   
