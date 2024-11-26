@@ -5,7 +5,6 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import tasks, commands
 
-from players import *
 from events import *
 
 load_dotenv()
@@ -19,23 +18,27 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='$', intents=intents)
 
+
 @bot.event # отмечает готовность к работе
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
 @bot.event
-async def on_voice_state_update(member, before, after): # внести изменения
+async def on_voice_state_update(member, before, after):
 
     #Регистрирует заход/выход игроков из голосовых каналов
 
-    if fetch_lobby(after.channel.id) != None: #and fetch_lobby(after.channel.id).game_in_process == False:
-        fetch_lobby(after.channel.id).add_player(member)
-        await bot.get_channel(fetch_lobby(after.channel.id).channels['common_text_id']).set_permissions(member, view_channel=True)
+    first_channel_lobby = fetch_lobby_by_channel(before.channel.id)
+    second_channel_lobby = fetch_lobby_by_channel(after.channel.id)
+
+    if second_channel_lobby != None:
+        second_channel_lobby.add_player(member)
+        await bot.get_channel(second_channel_lobby.channels['common_text_id']).set_permissions(member, view_channel=True)
         
-    if fetch_lobby(before.channel.id) != None: #and fetch_lobby(after.channel.id).game_in_process == False:
-        fetch_lobby(before.channel.id).remove_player(member)
-        await bot.get_channel(fetch_lobby(before.channel.id).channels['common_text_id']).set_permissions(member, view_channel=False)
-        if len(before.channel.members)==0: await delete_lobby(fetch_lobby(before.channel.id))
+    if first_channel_lobby != None:
+        first_channel_lobby.remove_player(member)
+        await bot.get_channel(first_channel_lobby.channels['common_text_id']).set_permissions(member, view_channel=False)
+        if len(first_channel_lobby.players)==0: await delete_lobby(first_channel_lobby)
 
 
 class MyCog(commands.Cog): 
@@ -54,6 +57,8 @@ class MyCog(commands.Cog):
         print(self.index)
         self.index += 1
 
+# --- КОМАНДЫ --- 
+
 @bot.command()
 async def foo(ctx, arg): #тест на ввод-вывод
     await ctx.send(arg)
@@ -63,7 +68,7 @@ async def create_Lobby(ctx, name=f'Лобби {len(lobby_list)+1}', max_users=14
 
     #!Добавить условие чтобы можно было создавать лобби только из голосового
 
-    if ctx.author.voice:
+    if ctx.author.voice: # проверяет, находится ли автор в каком-либо голосовом канале
 
         guild = ctx.guild
     
@@ -79,11 +84,8 @@ async def create_Lobby(ctx, name=f'Лобби {len(lobby_list)+1}', max_users=14
 
         await common_text.set_permissions(ctx.author, view_channel=True)
 
-        await ctx.author.move_to(voice_channel) #Перекидывает хоста в голосовой
-
         create_lobby(
             host = ctx.author, 
-            name = name, 
             voice_channel_id = voice_channel.id, 
             common_text_id = common_text.id, 
             mafia_text_id = mafia_text.id, 
@@ -91,67 +93,74 @@ async def create_Lobby(ctx, name=f'Лобби {len(lobby_list)+1}', max_users=14
             max_players_count = max_users
         )
 
-@bot.command()
-async def ban(ctx, user): #функция бана
-    await ctx.message.delete()
-    if ctx.channel.id == fetch_by_user(ctx.author)['lobby'].channels['common_text_id']:
-        if fetch_by_user(ctx.author)['player']==fetch_by_user(ctx.author)['lobby'].players[0]:
-            if fetch_by_user(user)['player'] in fetch_by_user(ctx.author)['lobby']:
-                if user.voice.channel.id == fetch_by_user(user)['lobby'].channels['voice_channel_id']:
-                    await user.move_to(None)
-
-                fetch_by_user(user)['lobby'].channels['voice_channel_id'].set_permissions(user, connect=False)
-                fetch_by_user(user)['lobby'].channels['common_text_id'].set_permissions(user, view_channel=False)
-                fetch_by_user(user)['lobby'].channels['mafia_text_id'].set_permissions(user, view_channel=False)
-                fetch_by_user(user)['lobby'].channels['inspector_tetx_id'].set_permissions(user, view_channel=False)
-
-                fetch_by_user(user)['lobby'].remove_player(fetch_by_user(user)['player'])
-
-                await ctx.send(f'Пользователь {user} был забанен!')
-            
-# Всё это надо дописать...
+        await ctx.author.move_to(voice_channel) #Перекидывает хоста в голосовой
 
 @bot.command()
-async def vote(ctx, user): #функция голосования
-    await ctx.message.delete()
-    if ctx.channel.id == fetch_by_user(ctx.author)['lobby'].channels['common_text_id']:
-        if fetch_by_user(user)['player'] in fetch_by_user(ctx.author)['lobby']:
-            if fetch_by_user(ctx.author)['player'].voted_for != None:
-                fetch_by_user(ctx.author)['player'].voted_for = user
-                await ctx.send(f'{ctx.author} проголосовал за {user}!')
+async def ban(ctx, target): #функция бана
+
+    await ctx.message.delete() # удаление сообщения автора
+
+    author_player = fetch_by_user(ctx.author)['player']
+    target_player = fetch_by_user(target)['player']
+    target_lobby = fetch_by_user(target)['lobby']
+
+    if ctx.channel.id == target_lobby.channels['common_text_id']:
+        if author_player == target_lobby.players[0]:
+            if target.voice.channel.id == target_lobby.channels['voice_channel_id']:
+                await target.move_to(None)
+
+            target_lobby.channels['voice_channel_id'].set_permissions(target, connect=False)
+            target_lobby.channels['common_text_id'].set_permissions(target, view_channel=False)
+            target_lobby.channels['mafia_text_id'].set_permissions(target, view_channel=False)
+            target_lobby.channels['inspector_tetx_id'].set_permissions(target, view_channel=False)
+
+            target_lobby.remove_player(target_player)
+
+            await ctx.send(f'Пользователь {target} был забанен!')
 
 @bot.command()
-async def kill(ctx, user): #функция убийства
-    await ctx.message.delete()
-    if ctx.channel.id == fetch_by_user(ctx.author)['lobby'].channels['mafia_text_id']:
-        if fetch_by_user(user)['player'] in fetch_by_user(ctx.author)['lobby']:
-            if fetch_by_user(ctx.author)['player'].role == 'killer':
-                fetch_by_user(ctx.author)['lobby'].game_stats['target'] = user
-                await ctx.send(f'{user} пал новой целью убийцы!')
+async def vote(ctx, target): #функция голосования
+
+    await ctx.message.delete() # удаление сообщения автора
+
+    author_player = fetch_by_user(ctx.author)['player']
+    target_lobby = fetch_by_user(target)['lobby']
+
+    if ctx.channel.id == target_lobby.channels['common_text_id']:
+        if author_player in target_lobby:
+            if author_player['voted_for'] != None:
+                author_player['voted_for'] = target
+                await ctx.send(f'{ctx.author} проголосовал за {target}!')
 
 @bot.command()
-async def inspect(ctx, user): #функция проверки
-    await ctx.message.delete()
-    if ctx.channel.id == fetch_by_user(ctx.author)['lobby'].channels['inspector_text_id']:
-        if fetch_by_user(user)['player'] in fetch_by_user(ctx.author)['lobby']:
-            if fetch_by_user(ctx.author)['player'].role == 'inspector':
-                fetch_by_user(ctx.author)['lobby'].game_stats['inspected'] = user
-                await ctx.send(f'Шериф собирается проверить {user}!')
+async def kill(ctx, target): #функция 'убийства'
 
-##
+    await ctx.message.delete() # удаление сообщения автора
 
-def fetch_by_user(user): #!Меганеудобная фигня, тк всегда проходится по ВСЕМ лобби и ВСЕМ игрокам пока не найдёт нужного (Помогите!)
-    output = None
-    for i in lobby_list:
-        for j in i.players:
-            if j.user == user: output = {'player':j, 'lobby':i}
-    return output #!Переделать это тк будут вылетать ошибки
+    author_player = fetch_by_user(ctx.author)['player']
+    target_lobby = fetch_by_user(target)['lobby']
 
-def fetch_lobby(channel_id): # берёт ID голосового канала, возвращает объект привязанного лобби
-    output = None
-    for i in lobby_list:
-        if channel_id == i.channels.values(): output = i
-    return output
+    if ctx.channel.id == target_lobby.channels['mafia_text_id']:
+        if author_player in target_lobby:
+            if author_player['role'] == 'killer':
+                target_lobby.game_stats['target'] = target
+                await ctx.send(f'{target} пал новой целью убийцы!')
+
+@bot.command()
+async def inspect(ctx, target): #функция проверки
+
+    await ctx.message.delete() # удаление сообщения автора
+
+    author_player = fetch_by_user(ctx.author)['player']
+    target_lobby = fetch_by_user(target)['lobby']
+
+    if ctx.channel.id == target_lobby.channels['inspector_text_id']:
+        if author_player in target_lobby:
+            if author_player['role'] == 'inspector':
+                target_lobby.game_stats['inspected'] = target
+                await ctx.send(f'Шериф собирается проверить {target}!')
+
+# --- ДРУГИЕ ФУНКЦИИ ---
 
 async def delete_lobby(lobby):
     await bot.get_channel(lobby.channels['voice_channel_id']).delete()
@@ -160,6 +169,5 @@ async def delete_lobby(lobby):
     await bot.get_channel(lobby.channels['inspector_text_id']).delete()
     lobby_list.remove(lobby)
 
-  
-    
+
 bot.run(TOKEN)
