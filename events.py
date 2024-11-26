@@ -7,7 +7,7 @@ class Lobby:
     self.channels = channels 
     self.game_stats = game_stats
     self.game_in_process = game_in_process
-    self.max_player_count = max_player_count   
+    self.max_player_count = max_player_count
 
   def start_game(self):
     self.game_in_process = True
@@ -15,7 +15,8 @@ class Lobby:
     self.game_stats = {
       'until_next_phase':15,
       'target':None,
-      'inspected':None
+      'inspected':None,
+      'protected':None
     }
     count = len(players)
     cmafia = round(count / 3)
@@ -45,6 +46,15 @@ class Lobby:
   def phase_shift(self, current_phase: str): # дописать
     self.until_next_phase == 12
     #убить игрока, на которого нацелилась мафия
+    def killing():
+      target_player = None
+      for player in self.players:
+        if target == player['user']:
+          target_player = player['target']
+        
+      if self.game_stats['target'] != None and self.game_stats['protected'] and target_player != None:
+        
+        
     #убить игрока, за которого проголосовало большинство города
     def voting():
       user_deleted = None
@@ -64,8 +74,10 @@ class Lobby:
               return first[1]
       return None
     #активировать способность доктора
+    
     #сказать о проверке шерифу
-  
+    
+
 # -1 означает, что еще не конец
 # 0 означает, что мафия выйграла
 # 1 означает, что мирные выйграли
