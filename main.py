@@ -58,7 +58,7 @@ class Lobby:
 
         self.players = players
         self.channels = channels 
-        self.game_stats = game_data
+        self.game_data = game_data
         self.game_stats = game_stats
 
 
@@ -150,7 +150,7 @@ class Lobby:
                     if self.players[index]['user'].name == player['voted_for'] and self.players[index]['alive']:
                         ranking[index] += 1
 
-        if ranking.index(max(ranking)) == ranking.index(max(ranking), -1, 0):
+        if ranking.index(max(ranking)) != ranking.index(max(ranking), -1, 0):
             await bot.get_channel(self.channels['common_text_id']).send('Голоса разделились!')
         else:
             voted_out = self.players[ranking.index(max(ranking))]
