@@ -98,7 +98,7 @@ class Lobby:
             roles.remove(role)
   
 
-    def add_player(self, user): #добавить игрока
+    def add_player(self, user:tuple): #добавить игрока
         self.players.append({
             'user':user, 
             'role':None, 
@@ -107,7 +107,7 @@ class Lobby:
         })
 
 
-    def remove_player(self, user): #удалить игрока
+    def remove_player(self, user:tuple): #удалить игрока
         for player in self.players:
             if player['user'] == user: 
                 self.players.remove(player)
@@ -206,7 +206,7 @@ class Lobby:
             await bot.get_channel(self.channels['protector_text_id']).set_permissions(player['user'], send_messgaes=True, view_channel=False)
         
     
-    async def kill_player(self, user):
+    async def kill_player(self, user:tuple):
         await bot.get_channel(self.channels['voice_channel_id']).set_permissions(user, speak=False)
         await bot.get_channel(self.channels['common_text_id']).set_permissions(user, send_messages=False)
         await bot.get_channel(self.channels['mafia_text_id']).set_permissions(user, send_messages=False)
@@ -247,7 +247,7 @@ async def on_ready():
 
 
 @bot.command()
-async def foo(ctx, arg): #тест на ввод-вывод
+async def foo(ctx, arg:str): #тест на ввод-вывод
     await ctx.send(arg)
 
 
@@ -313,7 +313,7 @@ async def start_game(ctx): # команда начала игры
 
 
 @bot.command()
-async def ban(ctx, target): #функция бана
+async def ban(ctx, target:str): #функция бана
 
     await ctx.message.delete() # удаление сообщения автора
 
@@ -346,7 +346,7 @@ async def ban(ctx, target): #функция бана
 
 
 @bot.command()
-async def vote(ctx, target): #функция голосования
+async def vote(ctx, target:str): #функция голосования
 
     await ctx.message.delete() # удаление сообщения автора
 
@@ -370,7 +370,7 @@ async def vote(ctx, target): #функция голосования
 
 
 @bot.command()
-async def kill(ctx, target): #функция 'убийства'
+async def kill(ctx, target:str): #функция 'убийства'
 
     await ctx.message.delete() # удаление сообщения автора
 
@@ -392,7 +392,7 @@ async def kill(ctx, target): #функция 'убийства'
 
 
 @bot.command()
-async def inspect(ctx, target): #функция проверки
+async def inspect(ctx, target:str): #функция проверки
 
     await ctx.message.delete() # удаление сообщения автора
 
@@ -414,7 +414,7 @@ async def inspect(ctx, target): #функция проверки
 
 
 @bot.command()
-async def protect(ctx, target): #функция защиты
+async def protect(ctx, target:str): #функция защиты
 
     await ctx.message.delete() # удаление сообщения автора
 
@@ -439,7 +439,7 @@ async def protect(ctx, target): #функция защиты
 
 
 @bot.event
-async def on_voice_state_update(member, before, after):
+async def on_voice_state_update(member:tuple, before, after):
 
     #Регистрирует заход/выход игроков из голосовых каналов
 
@@ -462,14 +462,14 @@ async def on_voice_state_update(member, before, after):
         if len(first_channel_lobby.players)==0: await first_channel_lobby.delete_lobby()
 
 
-def fetch_by_username(username): # берёт ID пользователя, возвращает статы игрока, лобби
+def fetch_by_username(username:int): # берёт ID пользователя, возвращает статы игрока, лобби
     for lobby in lobby_list:
         for player in lobby.players:
             if player['user'].name == username: return {'player':player, 'lobby':lobby}
     return None
 
 
-def fetch_lobby_by_channel(channel_id): # берёт ID голосового канала, возвращает объект привязанного лобби
+def fetch_lobby_by_channel(channel_id:int): # берёт ID голосового канала, возвращает объект привязанного лобби
     for lobby in lobby_list:
         if channel_id in lobby.channels.values(): return lobby
     return None
